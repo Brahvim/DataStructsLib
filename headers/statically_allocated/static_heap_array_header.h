@@ -1,15 +1,20 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-// Functions returning `type##_static_heap_array*`s actually return the instance they're dealing with.
+#define DECLARE_STATIC_HEAP_ARRAY_STRUCT(type)	\
+struct type##_static_heap_array;
 
-#define DECLARE_STATIC_HEAP_ARRAY_STRUCT(type)																															\
-struct type##_static_heap_array {																																		\
-	type *end;        																																					\
-	type *start;    																																					\
-	size_t size;     																																					\
-	type *last_item; 																																					\
-};																																										\
+#define DEFINE_STATIC_HEAP_ARRAY_STRUCT(type)	\
+struct type##_static_heap_array {				\
+	type *end;        							\
+	type *start;    							\
+	size_t size;     							\
+	type *last_item; 							\
+};												\
+
+// Functions returning `type##_static_heap_array*`s return the instance they're passed.
+
+#define DECLARE_STATIC_HEAP_ARRAY_FUNCTIONS(type)																														\
 																																										\
 /**  */								 																																	\
 bool type##_static_heap_array_create(struct type##_static_heap_array *array, size_t element_size, size_t initial_capacity);												\
@@ -79,3 +84,4 @@ void type##_static_heap_array_filter(struct type##_static_heap_array *array, boo
 																																										\
 /**  */								 																																	\
 struct type##_static_heap_array* type##_static_heap_array_reverse(struct type##_static_heap_array *array);
+
